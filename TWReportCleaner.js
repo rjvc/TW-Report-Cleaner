@@ -6,9 +6,9 @@
             prefix: 'TWReportCleaner',
             name: 'TW Report Cleaner',
             version: 'v1.0.0',
-            author: 'QuoVadis',
-            authorUrl: 'https://google.com/',
-            helpLink: 'https://google.com/',
+            author: 'Aurelius',
+            authorUrl: '#',
+            helpLink: '',
         },
         translations: {
             pt_PT: {
