@@ -148,15 +148,11 @@
     }
 
     if (!isOnReportScreen()) {
-        // Navigate to reports screen
-        window.location.href = `/game.php?screen=report`;
+        window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
     }
     else {
-
-        // Ensure twSDK is loaded and initialized, then open widget
         $.getScript(`https://twscripts.dev/scripts/twSDK.js`, async function () {
             try {
-                window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
                 await twSDK.init(scriptConfig);
             } catch (e) {
                 console.error('[TWReportCleaner] twSDK init failed', e);
