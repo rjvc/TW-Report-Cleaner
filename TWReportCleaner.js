@@ -80,27 +80,13 @@ const defaultCategories = ['trade','event','other'];
 const AllCategories = ['attack','defense','support','trade','event','other'];
 const REQUIRED_SCREEN = 'report';
 
-
-/*
-$.getScript(`https://twscripts.dev/scripts/twSDK.js`, async function () {
-    try {
-        await twSDK.init(scriptConfig);
-    } catch (e) {
-        console.error('[TWReportCleaner] twSDK init failed', e);
-    }
-    BuildUI();
-});
-*/
  $.getScript(`https://twscripts.dev/scripts/twSDK.js?url=${document.currentScript.src}`, async function () {
     await twSDK.init(scriptConfig);
     if (!isOnReportScreen()) {
         window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
-        buildUI();
+        return;
     }
-    else {
-        buildUI();
-    }
-    
+    BuildUI();
 });
 
 function isOnReportScreen() {
@@ -126,7 +112,7 @@ async function runCleaner(categories) {
             const url = `/game.php?screen=report&action=del_all&mode=${mode}&group_id=-1&h=${h}`;
             await fetch(url,{method:'GET',credentials:'same-origin'});
         }catch(e){
-            UI.ErrorMessage(`${twSDK.tt('Deletion Complete')} - Erro ao apagar ${twSDK.tt(`categories.${mode}`)}`);
+            UI.ErrorMessage(`${twSDK.tt('Deletion Complete')} - Erro ao apagar ${twSDK.tt(mode)}`);
         }
     }
     UI.SuccessMessage(twSDK.tt('Deletion Complete'));
@@ -140,12 +126,7 @@ function BuildUI() {
     let html = '<table class="ra-table ra-table-v2" width="100%"><tbody>';
     AllCategories.forEach(cat => {
         const isChecked = selected.includes(cat) ? 'checked' : '';
-        
-        const catName = twSDK.tt(cat);
-        html += `<tr class="twCleanerRow">
-            <td><input type="checkbox" value="${cat}" ${isChecked}></td>
-            <td style="width:100%">${catName}</td>
-            </tr>`;
+        html += renderCategoryRow(cat, isChecked);
     });
     html += '</tbody></table>';
     html += `<div class="ra-mb15">
@@ -159,13 +140,15 @@ function BuildUI() {
 
     const widget = document.getElementById('twReportCleanerWidget');
 
+    // EVENT LISTENERS
+    //      Checkbox Change
     widget.querySelectorAll('input[type=checkbox]').forEach(chk=>{
         chk.addEventListener('change',()=>{
             const checked = Array.from(widget.querySelectorAll('input[type=checkbox]:checked')).map(i=>i.value);
             savePrefs(checked);
         });
     });
-
+    //      Row Click Toggle
     widget.querySelectorAll('.twCleanerRow').forEach(row => {
         row.addEventListener('click', e => {
             if (e.target.tagName === 'INPUT') return;
@@ -177,8 +160,6 @@ function BuildUI() {
             savePrefs(checked);
         });
     });
-
-    // Event Listeners
     //      Run Cleaner
     widget.querySelector('#twRunCleaner').addEventListener('click', ()=>{
         const checked = Array.from(widget.querySelectorAll('input[type=checkbox]:checked')).map(i=>i.value);
@@ -188,15 +169,16 @@ function BuildUI() {
     //      Close Widget
     widget.querySelector('#twCloseCleaner').addEventListener('click', ()=>widget.remove());
     //      Keyboard Shortcuts
-    widget.addEventListener('keydown', e=>{
-        if(e.key==='Escape'){
-            widget.querySelector('#twCloseCleaner').click();
-        }
+    widget.addEventListener('keydown', e => {
+        if (e.key === 'Escape') widget.querySelector('#twCloseCleaner').click();
+        if (e.key === 'Enter') widget.querySelector('#twRunCleaner').click();
     });
-    widget.addEventListener('keydown', e=>{
-        if(e.key==='Enter'){
-            widget.querySelector('#twRunCleaner').click();
-            e.preventDefault();
-        }
-    });
+};
+function renderCategoryRow(cat, isChecked) {
+    return `
+        <tr class="twCleanerRow">
+            <td><input type="checkbox" value="${cat}" ${isChecked}></td>
+            <td style="width:100%">${twSDK.tt(cat)}</td>
+        </tr>
+    `;
 }
