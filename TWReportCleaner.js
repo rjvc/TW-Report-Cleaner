@@ -161,6 +161,7 @@ function BuildUI() {
         const checked = Array.from(widget.querySelectorAll('input[type=checkbox]:checked')).map(i=>i.value);
         runCleaner(checked);
         widget.querySelector('#twCloseCleaner').click()
+        window.location.reload();
     });
     //      Close Widget
     widget.querySelector('#twCloseCleaner').addEventListener('click', ()=>widget.remove());
