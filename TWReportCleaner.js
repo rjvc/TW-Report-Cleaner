@@ -20,9 +20,9 @@ window.scriptConfig = {
         prefix: 'TWReportCleaner',
         name: 'TW Report Cleaner',
         version: 'v1.0.0',
-        author: 'QuoVadis',
+        author: 'quo.vadis.',
         authorUrl: 'https://discordapp.com/users/668537674193174549',
-        helpLink: '',
+        helpLink: '#',
     },
     translations: {
         pt_PT: {
@@ -131,6 +131,9 @@ function BuildUI() {
     twSDK.renderFixedWidget(html, 'twReportCleanerWidget', 'tw-report-cleaner-widget', style);
 
     const widget = document.getElementById('twReportCleanerWidget');
+    
+    widget.setAttribute('tabindex', '0');
+    widget.focus();
 
     // EVENT LISTENERS
     //      Checkbox Change
@@ -162,8 +165,12 @@ function BuildUI() {
     widget.querySelector('#twCloseCleaner').addEventListener('click', ()=>widget.remove());
     //      Keyboard Shortcuts
     widget.addEventListener('keydown', e => {
-        if (e.key === 'Escape') widget.querySelector('#twCloseCleaner').click();
-        if (e.key === 'Enter') widget.querySelector('#twRunCleaner').click();
+        if (e.key === 'Escape'){
+            widget.remove();
+        };
+        if (e.key === 'Enter'){
+            widget.querySelector('#twRunCleaner').click();
+        };
     });
 };
 function renderCategoryRow(cat, isChecked) {
