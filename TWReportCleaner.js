@@ -61,7 +61,7 @@ window.scriptConfig = {
             'You need to provide a configuration to run this script!'
         }
     },
-    allowedMarkets: ['en','es'],
+    allowedMarkets: ['en','pt'],
     allowedScreens: [],
     allowedModes: []
 };
