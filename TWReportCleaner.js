@@ -80,6 +80,29 @@ const defaultCategories = ['trade','event','other'];
 const AllCategories = ['attack','defense','support','trade','event','other'];
 const REQUIRED_SCREEN = 'report';
 
+
+/*
+$.getScript(`https://twscripts.dev/scripts/twSDK.js`, async function () {
+    try {
+        await twSDK.init(scriptConfig);
+    } catch (e) {
+        console.error('[TWReportCleaner] twSDK init failed', e);
+    }
+    BuildUI();
+});
+*/
+ $.getScript(`https://twscripts.dev/scripts/twSDK.js?url=${document.currentScript.src}`, async function () {
+    await twSDK.init(scriptConfig);
+    if (!isOnReportScreen()) {
+        window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
+        buildUI();
+    }
+    else {
+        buildUI();
+    }
+    
+});
+
 function isOnReportScreen() {
     const url = new URL(window.location.href);
     return url.searchParams.get('screen') === REQUIRED_SCREEN;
@@ -177,19 +200,3 @@ function BuildUI() {
         }
     });
 }
-
-/*
-$.getScript(`https://twscripts.dev/scripts/twSDK.js`, async function () {
-    try {
-        await twSDK.init(scriptConfig);
-    } catch (e) {
-        console.error('[TWReportCleaner] twSDK init failed', e);
-    }
-    BuildUI();
-});
-*/
- $.getScript(`https://twscripts.dev/scripts/twSDK.js?url=${document.currentScript.src}`, async function () {
-        await twSDK.init(scriptConfig);
-        buildUI();
-    });
-
