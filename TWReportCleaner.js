@@ -6,8 +6,11 @@
             prefix: 'TWReportCleaner',
             name: 'TW Report Cleaner',
             version: 'v1.0.0',
-            author: 'Aurelius',
-            authorUrl: '#',
+            author: 'QuoVadis',
+            authorUrl: 'https://discordapp.com/users/668537674193174549',
+            description: 'Cleans up your reports based on selected categories.',
+            longDescription: 'This script allows you to easily delete reports in Tribal Wars based on selected categories such as attacks, defenses, support, trade, events, and others. Simply select the categories you want to delete and run the cleaner.',
+            howToUse: 'Open the TW Report Cleaner widget, select the report categories you wish to delete, and click "Delete Selected". The script will then remove all reports in the chosen categories.',
             helpLink: '',
         },
         translations: {
@@ -22,7 +25,12 @@
                 trade: 'Comércio',
                 event: 'Eventos',
                 other: 'Misc',
-                Help: 'Ajuda'
+                Help: 'Ajuda',            
+                'Script is not allowed to be used on this TW market!':
+                'Script não está autorizado a ser usado nesta região!',
+                'There was an error!': 'Houve um erro!',
+                'You need to provide a configuration to run this script!':
+                'Necessitas de providenciar uma configuração para correr este script!',
             },
             en_DK: {
                 'TW Report Cleaner': 'TW Report Cleaner',
@@ -35,12 +43,18 @@
                 trade: 'Trade',
                 event: 'Event',
                 other: 'Other',
-                Help: 'Help'
+                Help: 'Help',
+                'Script is not allowed to be used on this TW market!':
+                'Script is not allowed to be used on this TW market!',
+                'There was an error!': 'There was an error!',
+                'You need to provide a configuration to run this script!':
+                'You need to provide a configuration to run this script!'
             }
         },
-        allowedMarkets: ['en','us','fr','es','pt'],
-        allowedScreens: ['report'],
-        isDebug: true
+        allowedMarkets: ['en','es'],
+        allowedScreens: [],
+        allowedModes: [],
+        isDebug: DEBUG
     };
 
     const STORAGE_KEY = 'twReportCleanerPrefs';
@@ -146,18 +160,23 @@
         widget.tabIndex=0;
         widget.focus();
     }
-
-    if (!isOnReportScreen()) {
-        window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
+    if(!twSDK.isMarketAllowed() || !isOnReportScreen()) {
+        UI.ErrorMessage('');
+        
+        if (!isOnReportScreen()) {
+            window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
+        }
+        else {
+        
+        }
     }
-    else {
-        $.getScript(`https://twscripts.dev/scripts/twSDK.js`, async function () {
-            try {
-                await twSDK.init(scriptConfig);
-            } catch (e) {
-                console.error('[TWReportCleaner] twSDK init failed', e);
-            }
-            openWidget();
-        });
-    };
+
+    $.getScript(`https://twscripts.dev/scripts/twSDK.js`, async function () {
+        try {
+            await twSDK.init(scriptConfig);
+        } catch (e) {
+            console.error('[TWReportCleaner] twSDK init failed', e);
+        }
+        openWidget();
+    });
 })();
