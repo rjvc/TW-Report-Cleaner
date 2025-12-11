@@ -14,11 +14,7 @@
  * This script can NOT be cloned and modified without permission from the script author.
  --------------------------------------------------------------------------------------*/
 
-// User Input
-if (typeof DEBUG !== 'boolean') DEBUG = false;
-if (typeof config !== 'object') config = null;
-
-// Script Config
+ // Script Config
 window.scriptConfig = {
     scriptData: {
         prefix: 'TWReportCleaner',
@@ -68,8 +64,7 @@ window.scriptConfig = {
     },
     allowedMarkets: ['en','es'],
     allowedScreens: [],
-    allowedModes: [],
-    isDebug: DEBUG
+    allowedModes: []
 };
 
 const STORAGE_KEY = 'twReportCleanerPrefs';
