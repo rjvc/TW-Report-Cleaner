@@ -76,7 +76,7 @@ if (!window.twReportCleanerLoaded) {
 
     $.getScript(`https://twscripts.dev/scripts/twSDK.js?url=${document.currentScript.src}`, async function () {
         await twSDK.init(scriptConfig);
-        if (twSDK.isMarketAllowed()) {
+        if (twSDK.checkValidMarket()) {
             if (!isOnReportScreen()) {
                 window.location.href = `/game.php?screen=${REQUIRED_SCREEN}`;
                 return;
